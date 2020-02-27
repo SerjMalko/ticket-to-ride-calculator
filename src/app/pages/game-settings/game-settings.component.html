@@ -1,0 +1,77 @@
+<form nz-form [formGroup]="gameForm" (ngSubmit)="submitGameForm()">
+
+  <div class="player-info" formArrayName="playerInfos">
+
+    <nz-form-item *ngFor="let control of playerInfoList.controls; let i=index">
+      <div [formGroupName]="i">
+        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i == 0"
+        >Players
+        </nz-form-label>
+        <nz-form-control
+          [nzXs]="24"
+          [nzSm]="20"
+          [nzOffset]="i == 0 ? 0 : 4"
+          nzErrorTip="Please input route's value or delete this field."
+        >
+          <ng-container class="player-info__player-element" [formGroupName]="'player'">
+            <input
+              class="player-name"
+              nz-input
+              placeholder="placeholder"
+              [formControlName]="'name'"
+            />
+
+            <nz-select class="player-color"
+                       [formControlName]="'colorTrains'"
+                       nzAllowClear
+                       nzPlaceHolder="Choose"
+                       (ngModelChange)="reInitColorList()"
+                       [nzCustomTemplate]="custom">
+
+              <nz-option *ngFor="let option of listOfColorTrain"
+
+                         nzCustomContent
+                         [nzLabel]="option.label"
+                         [nzValue]="option.value">
+                <i class="train-color-item color-{{option.value}}"></i>
+                <span>{{option.label}}</span>
+              </nz-option>
+            </nz-select>
+            <ng-template #custom let-selected>
+              <i class="train-color-item color-{{selected.nzValue}}"></i>
+              <span>{{selected.nzValue}}</span>
+            </ng-template>
+
+          </ng-container>
+
+
+          <i nz-icon *ngIf="playerInfoList.length > MIN_PLAYER"
+             nzType="minus-circle-o"
+             class="dynamic-delete-button"
+             (click)="removePlayerInfo(i)"></i>
+        </nz-form-control>
+      </div>
+
+    </nz-form-item>
+    <nz-form-item *ngIf="playerInfoList.length < MAX_PLAYER">
+      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
+        <button nz-button nzType="dashed" class="add-button" (click)="addPlayerInfo($event)">
+          <i nz-icon nzType="plus"></i>
+          Add player
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
+        <button nz-button nzType="primary">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
+
+
+  </div>
+
+
+</form>
+
+
+

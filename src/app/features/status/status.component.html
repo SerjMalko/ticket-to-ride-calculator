@@ -1,0 +1,4 @@
+<i nz-icon
+   nzType="{{value?'check-circle':'close-circle'}}"
+   class="dynamic-delete-button" [ngClass]="{'success': value, 'fail': !value}" (click)="changeStatus()">
+</i>

@@ -1,0 +1,27 @@
+:host {
+
+
+  .dynamic-delete-button {
+    cursor: pointer;
+    position: relative;
+    top: 4px;
+    font-size: 24px;
+    color: #999;
+    transition: all 0.3s;
+  }
+
+  .dynamic-delete-button:hover {
+    color: #777;
+  }
+
+  .success {
+    filter: invert(78%) sepia(72%) saturate(2301%) hue-rotate(41deg) brightness(110%) contrast(109%);
+  }
+
+  .fail {
+    filter: invert(14%) sepia(44%) saturate(6795%) hue-rotate(339deg) brightness(114%) contrast(92%);
+  }
+
+
+
+}

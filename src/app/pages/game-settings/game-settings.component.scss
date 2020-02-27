@@ -1,0 +1,65 @@
+@import "variebles";
+
+.player-info {
+
+
+  &__player-element {
+    display: flex;
+  }
+
+
+}
+
+.player-name {
+  width: 60%;
+  margin-right: 8px;
+}
+
+.player-color {
+  width: $base-indent * 15;
+  margin-right: $base-indent;
+}
+
+.train-color-item {
+  display: inline-block;
+  width: $base-indent;
+  height: $base-indent;
+  border-radius: 50%;
+  border: 1px solid;
+  opacity: 0.7;
+  margin-right: $base-indent;
+}
+
+.color-green {
+  background-color: $color-green;
+}
+
+.color-red {
+  background-color: $color-red;
+}
+
+.color-yellow {
+  background-color: $color-yellow;
+}
+
+.color-black {
+  background-color: $color-black;
+}
+
+.color-blue {
+  background-color: $color-blue;
+}
+
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all 0.3s;
+}
+
+.dynamic-delete-button:hover {
+  color: #777;
+}

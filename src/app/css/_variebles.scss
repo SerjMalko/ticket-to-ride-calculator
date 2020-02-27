@@ -1,0 +1,19 @@
+
+$base-indent: 10px;
+$base-color: black;
+$color-red: red;
+$color-blue: blue;
+$color-green: green;
+$color-black: black;
+$color-yellow: yellow;
+$button-hover-color: #d4d4d4;
+
+
+:export {
+  baseColor: $base-color;
+  colorRed: $color-red;
+  colorBlue: $color-blue;
+  colorGreen: $color-green;
+  colorYellow: $color-yellow;
+  colorBlack: $color-black;
+}

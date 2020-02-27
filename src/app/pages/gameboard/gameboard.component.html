@@ -1,0 +1,78 @@
+<form nz-form [formGroup]="trainsForm" (ngSubmit)="submitTrainRouteForm()">
+  <div class="train">
+    <div class="ticket" *ngFor="let item of trainCarriageList.controls; let i = index">
+      <button class="ticket--item" (click)="addTrain(item)">
+        <span class="ticket--item__carriages"><b>{{item.value.trainSetting?.carriageCount}}</b> cur.</span>
+        <img class="ticket--item__img"
+             src="assets/img/train.svg"
+             alt="Train"/>
+        <span class="ticket--item__train-count">count <b>{{item.value.count}}</b></span>
+      </button>
+    </div>
+  </div>
+
+  <p class="game-result">
+    <span *ngIf="totalValueTrains$ | async as totalValueTrain"> Result for trains:
+      <b>{{totalValueTrain}}</b></span>
+    <span *ngIf="totalCountUseCarriages$ | async as totalCountTrain">, used carriage:
+      <b>{{totalCountTrain}}</b> </span>
+  </p>
+
+
+  <p class="game-result" *ngIf="totalValueRoutes$ | async as totalValueTrain"> Result for routes:
+    <b>{{totalValueTrain}}</b> value by <b>{{trainRoutes.controls?.length}}</b></p>
+
+
+  <p class="game-result" *ngIf="totalValue$ | async as totalValue"> Total Result:
+    <b>{{totalValue}}</b> route(s)</p>
+
+
+  <div class="train-route" formArrayName="routes">
+
+    <nz-form-item *ngFor="let control of trainRoutes.controls; let i=index">
+      <div [formGroupName]="i">
+        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i == 0"
+        >Routes
+        </nz-form-label>
+        <nz-form-control
+          [nzXs]="24"
+          [nzSm]="20"
+          [nzOffset]="i == 0 ? 0 : 4"
+          nzErrorTip="Please input route's value or delete this field."
+        >
+          <input
+            class="route-value-input"
+            nz-input
+            placeholder="placeholder"
+            [attr.id]="control.value.id"
+            [formControlName]="'resultValue'"
+          />
+
+
+          <app-status class="route-status" [formControlName]="'status'"></app-status>
+
+          <i nz-icon
+             nzType="minus-circle-o"
+             class="dynamic-delete-button"
+             (click)="removeTrainRoute(i)"></i>
+        </nz-form-control>
+      </div>
+
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
+        <button nz-button nzType="dashed" class="add-button" (click)="addTrainRoute($event)">
+          <i nz-icon nzType="plus"></i>
+          Add field
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
+        <button nz-button nzType="primary">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
+
+
+  </div>
+</form>

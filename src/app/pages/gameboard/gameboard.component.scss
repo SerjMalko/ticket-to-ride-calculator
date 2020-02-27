@@ -1,0 +1,89 @@
+@import "variebles";
+
+.train {
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-bottom: $base-indent * 2;
+
+
+  .ticket {
+    flex: 1 1 30%;
+
+
+    &--item {
+      border-radius: $base-indent * .5;
+      border: none;
+      padding: $base-indent;
+
+      margin-bottom: $base-indent;
+      margin-left: $base-indent;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &:hover {
+        background: $button-hover-color;
+      }
+
+      &__img {
+        width: $base-indent * 10;
+        height: $base-indent * 10;
+        // convert color svg element https://codepen.io/sosuke/pen/Pjoqqp
+        filter: invert(51%) sepia(77%) saturate(4490%) hue-rotate(166deg) brightness(101%) contrast(101%);
+        margin-bottom: $base-indent;
+
+      }
+
+      &__carriages {
+        margin: 0 auto $base-indent;
+      }
+
+
+      &__train-count {
+        margin: 0 auto;
+      }
+
+
+    }
+
+  }
+
+}
+
+.game-result {
+  text-align: center;
+}
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all 0.3s;
+}
+
+.dynamic-delete-button:hover {
+  color: #777;
+}
+
+.route-value-input {
+  width: 60%;
+  margin-right: 8px;
+}
+
+.route-status {
+  margin-right: $base-indent;
+}
+
+[nz-form] {
+  max-width: 600px;
+}
+
+.add-button {
+  width: 60%;
+}
