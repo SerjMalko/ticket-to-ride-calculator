@@ -69,10 +69,16 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
-        <button nz-button nzType="primary">Submit</button>
+        <button *ngIf="!isModalContent" nz-button nzType="primary">Submit</button>
       </nz-form-control>
     </nz-form-item>
 
 
   </div>
 </form>
+<ng-template [ngIf]="isModalContent">
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal()">Cancel</button>
+    <button nz-button nzType="primary" (click)="submitModal()">Submit</button>
+  </div>
+</ng-template>

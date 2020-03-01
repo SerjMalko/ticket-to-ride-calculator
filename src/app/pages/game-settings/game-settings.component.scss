@@ -1,13 +1,9 @@
 @import "variebles";
 
 .player-info {
-
-
   &__player-element {
     display: flex;
   }
-
-
 }
 
 .player-name {
@@ -62,4 +58,11 @@
 
 .dynamic-delete-button:hover {
   color: #777;
+}
+
+input.ant-input.ng-invalid.ng-touched {
+  border-color: red;
+}
+nz-select.ng-invalid.ng-touched > .ant-select-selection {
+  border-color: red !important;
 }

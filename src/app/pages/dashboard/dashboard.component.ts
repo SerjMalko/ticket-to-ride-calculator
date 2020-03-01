@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { GameService } from 'src/app/services/game.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,9 +10,18 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  data: Observable<any>;
+
+  constructor(private gameService: GameService) {
+  }
 
   ngOnInit(): void {
+    this.loadGameData();
+  }
+
+  loadGameData() {
+    this.data = this.gameService.loadGameResults();
+
   }
 
 }

@@ -15,21 +15,14 @@
       <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome">Welcome</a>
+            <a routerLink="/dashboard">Welcome</a>
           </li>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/game-setting">Play Game</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/gameboard">Game board</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a>Basic Form</a>
-          </li>
+<!--          <li nz-menu-item nzMatchRouter>-->
+<!--            <a routerLink="/gameboard">Game board</a>-->
+<!--          </li>-->
         </ul>
       </li>
     </ul>
@@ -41,6 +34,13 @@
             <i class="trigger"
                nz-icon
                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+        </span>
+        <span class="header-login" (click)="authService.loginByFb()">
+
+            <i class="trigger"
+               nz-icon
+               [nzType]="'facebook'"
             ></i>
         </span>
       </div>

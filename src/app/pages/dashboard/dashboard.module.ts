@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from 'src/app/pages/dashboard/dashboard.component';
-import { Router, RouterModule, Routes } from '@angular/router';
-import { GameSettingsComponent } from 'src/app/pages/game-settings/game-settings.component';
-
+import { RouterModule, Routes } from '@angular/router';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 const routes: Routes = [
   {
-    path: '', component: GameSettingsComponent
+    path: '', component: DashboardComponent
   }
 ];
 
 @NgModule({
   declarations: [DashboardComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule
-  ]
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        NgZorroAntdModule
+    ]
 })
 export class DashboardModule { }

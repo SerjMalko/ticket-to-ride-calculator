@@ -1,1 +1,45 @@
-<p>dashboard works!</p>
+<h2>Game list</h2>
+<nz-table #basicTable [nzData]="data | async">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Date</th>
+    <th>Players</th>
+    <th>Winner</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>{{data.gameId}}</td>
+    <td>{{data.createdDate | date:'short'}}</td>
+    <td>
+
+      <ng-container
+        *ngTemplateOutlet="dataPlayers;context:{$implicit: {dataPlayers: data.playerInfos}}">
+      </ng-container>
+
+    </td>
+    <td>{{data.status}}</td>
+  </tr>
+  </tbody>
+</nz-table>
+
+
+<ng-template #dataPlayers let-dataPlayers>
+  <nz-table #playerTable [nzShowPagination]="false" [nzData]="dataPlayers.dataPlayers">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Color</th>
+      <th>Result</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of playerTable.data">
+      <td>{{data.player?.name}}</td>
+      <td>{{data.player?.colorTrains}}</td>
+      <td>{{data.result?.totalValue}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
