@@ -12,17 +12,30 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="General" nzIcon="login">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/login">Login</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/welcome">Welcome</a>
+          </li>
+          <!--          <li nz-menu-item nzMatchRouter>-->
+          <!--            <a routerLink="/gameboard">Game board</a>-->
+          <!--          </li>-->
+        </ul>
+      </li>
       <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/dashboard">Welcome</a>
+            <a routerLink="/dashboard">Dashboard</a>
           </li>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/game-setting">Play Game</a>
           </li>
-<!--          <li nz-menu-item nzMatchRouter>-->
-<!--            <a routerLink="/gameboard">Game board</a>-->
-<!--          </li>-->
+          <!--          <li nz-menu-item nzMatchRouter>-->
+          <!--            <a routerLink="/gameboard">Game board</a>-->
+          <!--          </li>-->
         </ul>
       </li>
     </ul>
@@ -36,13 +49,32 @@
                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             ></i>
         </span>
-        <span class="header-login" (click)="authService.loginByFb()">
 
+        <ng-container *ngIf="authService.user$ | async as user; else loginFb">
+
+        <span>
+          {{user.displayName ? user.displayName : user.email}}
+          <img *ngIf="user.photoURL" src="{{user.photoURL}}" alt="photo">
+
+        </span>
+
+          <span class="header-login" (click)="authService.logout()">
+            <i class="trigger"
+               nz-icon
+               [nzType]="'logout'"
+            ></i>
+          </span>
+        </ng-container>
+
+
+        <ng-template #loginFb>
+<span class="header-login" (click)="authService.loginByFb()">
             <i class="trigger"
                nz-icon
                [nzType]="'facebook'"
             ></i>
-        </span>
+  </span>
+        </ng-template>
       </div>
     </nz-header>
     <nz-content>

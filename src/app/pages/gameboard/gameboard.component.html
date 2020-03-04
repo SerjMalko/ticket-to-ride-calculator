@@ -2,6 +2,9 @@
   <div class="train">
     <div class="ticket" *ngFor="let item of trainCarriageList.controls; let i = index">
       <button class="ticket--item" (click)="addTrain(item)">
+        <i nz-icon
+           nzType="minus-circle-o"
+           (click)="removeTrain(item, $event)"></i>
         <span class="ticket--item__carriages"><b>{{item.value.trainSetting?.carriageCount}}</b> cur.</span>
         <img class="ticket--item__img"
              src="assets/img/train.svg"
@@ -51,7 +54,7 @@
 
           <app-status class="route-status" [formControlName]="'status'"></app-status>
 
-          <i nz-icon
+          <i nz-icon *ngIf="trainRoutes.length > MIN_ROUTE_COUNT"
              nzType="minus-circle-o"
              class="dynamic-delete-button"
              (click)="removeTrainRoute(i)"></i>

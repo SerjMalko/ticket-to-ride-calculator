@@ -1,23 +1,20 @@
 <h2>Game list</h2>
+
 <nz-table #basicTable [nzData]="data | async">
   <thead>
   <tr>
-    <th>Id</th>
     <th>Date</th>
     <th>Players</th>
     <th>Winner</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let data of basicTable.data">
-    <td>{{data.gameId}}</td>
-    <td>{{data.createdDate | date:'short'}}</td>
+  <tr *ngFor="let data of basicTable.data" (click)="showDetail(data)">
+    <td>{{data.createdAt | date: 'yyyy.MM.dd HH:mm'}}</td>
     <td>
-
       <ng-container
         *ngTemplateOutlet="dataPlayers;context:{$implicit: {dataPlayers: data.playerInfos}}">
       </ng-container>
-
     </td>
     <td>{{data.status}}</td>
   </tr>
@@ -26,7 +23,7 @@
 
 
 <ng-template #dataPlayers let-dataPlayers>
-  <nz-table #playerTable [nzShowPagination]="false" [nzData]="dataPlayers.dataPlayers">
+  <nz-table *ngIf="dataPlayers" #playerTable [nzShowPagination]="false" [nzData]="dataPlayers.dataPlayers">
     <thead>
     <tr>
       <th>Name</th>

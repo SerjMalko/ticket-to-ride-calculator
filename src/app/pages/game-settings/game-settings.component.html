@@ -1,6 +1,50 @@
+<ng-template [ngIf]="gameTime && playerInfoList.controls.length > 0">
+  <h2>Game result</h2>
+
+  <div *ngIf="finishGameTime">
+    <h3> Game finish!!!</h3>
+    Win <b>{{winnerPlayer?.player?.name}}</b> with result: <b>{{winnerPlayer?.result?.totalValue}}</b>
+  </div>
+
+  <nz-table class="game-result-list" #nestedTable [nzData]="playerInfoList.controls" [nzFrontPagination]="false">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Color</th>
+      <th>Result</th>
+      <th *ngIf="!savedFinishGame">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+      <tr [ngStyle]="{'color': !!(data.value?.winner) ? 'goldenrod' : 'black'}"
+      >
+        <td>{{ data.value?.player?.name }}</td>
+        <td>
+          <img class="train-img train-img__{{data.value?.player?.colorTrains}}"
+               src="assets/img/train.svg"
+               alt="Train {{data.value?.player?.colorTrains}} color"/>
+        </td>
+        <td>{{ data.value.result?.totalValue }}</td>
+        <td
+        *ngIf="!savedFinishGame">
+        <a (click)="calcResult(data)"><span *ngIf="!data.value.result?.totalValue else editLabel">Add</span> result</a>
+        <ng-template #editLabel>
+          <span>Edit</span>
+        </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </nz-table>
+
+  <button *ngIf="!savedFinishGame" nz-button nzType="primary" (click)="finishGame()">Finish</button>
+</ng-template>
+
+
 <form nz-form [formGroup]="gameForm">
 
-  <div class="player-info" formArrayName="playerInfos">
+  <div class="player-info" formArrayName="playerInfos" *ngIf="!gameTime">
 
     <nz-form-item *ngFor="let control of playerInfoList.controls; let i=index">
       <div [formGroupName]="i">
@@ -15,24 +59,21 @@
         >
           <ng-container class="player-info__player-element" [formGroupName]="'player'">
             <input
-              *ngIf="!gameTime"
               class="player-name"
               nz-input
               placeholder="placeholder"
               [formControlName]="'name'"
             />
-            <span *ngIf="gameTime">{{control.value?.player?.name}}</span>
 
             <nz-select class="player-color"
-                       *ngIf="!gameTime"
+
                        [formControlName]="'colorTrains'"
                        nzAllowClear
                        nzPlaceHolder="Choose"
                        (ngModelChange)="reInitColorList()"
-                       [nzCustomTemplate]="custom">
+                       [nzCustomTemplate]="customColorTrain">
 
               <nz-option *ngFor="let option of listOfColorTrain"
-
                          nzCustomContent
                          [nzLabel]="option.label"
                          [nzValue]="option.value">
@@ -40,29 +81,19 @@
                 <span>{{option.label}}</span>
               </nz-option>
             </nz-select>
-            <ng-template #custom let-selected>
+            <ng-template #customColorTrain let-selected>
               <i class="train-color-item color-{{selected.nzValue}}"></i>
               <span>{{selected.nzValue}}</span>
             </ng-template>
 
-            <ng-container *ngIf="gameTime">
-              <ng-container
-                *ngTemplateOutlet="custom;context:{$implicit: {nzValue: control.value?.player?.colorTrains}}">
-              </ng-container>
-            </ng-container>
-
           </ng-container>
 
 
-          <i nz-icon *ngIf="playerInfoList.length > MIN_PLAYER && !gameTime"
+          <i nz-icon *ngIf="playerInfoList.length > MIN_PLAYER"
              nzType="minus-circle-o"
              class="dynamic-delete-button"
              (click)="removePlayerInfo(i)"></i>
 
-          <button nz-button nzType="dashed" *ngIf="gameTime"  (click)="calcResult(control)">
-            <i nz-icon nzType="plus"></i>
-            Add result
-          </button>
         </nz-form-control>
       </div>
 
@@ -80,12 +111,6 @@
         <button nz-button nzType="primary" (click)="submitGameForm()">Start</button>
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item *ngIf="gameTime">
-      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
-        <button nz-button nzType="primary" (click)="finishGame()">Finish</button>
-      </nz-form-control>
-    </nz-form-item>
-
 
   </div>
 

@@ -10,6 +10,8 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { GameboardComponent } from 'src/app/pages/gameboard/gameboard.component';
 import { GameResultService } from 'src/app/services/game-result.service';
+import { GameStatusEnum } from 'src/app/models/enum/game-status.enum';
+import { PlayerGameItemModel } from 'src/app/models/player-game-item.model';
 
 @Component({
   selector: 'app-game-settings',
@@ -26,6 +28,10 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
 
   public gameForm: FormGroup;
   gameTime: boolean;
+  finishGameTime: boolean;
+  savedFinishGame: boolean;
+  public winnerPlayer: PlayerGameItemModel;
+  private oldData: GameModel;
   public readonly MIN_PLAYER: number = 3;
   public readonly MAX_PLAYER: number = 5;
 
@@ -39,10 +45,22 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
     this.gameForm = this.fb.group({
       playerInfos: this.fb.array([]),
       createdDate: [''],
-      gameId: ['']
+      winnerResult: undefined,
+      id: ['']
     });
     this.initRouteParams();
     this.initGameInfo();
+  }
+
+  private restoreInformation(oldData: GameModel) {
+    this.oldData = oldData;
+    this.savedFinishGame = oldData.status === GameStatusEnum.COMPLETE.value;
+    this.finishGameTime = !!oldData.winnerResult;
+    this.initPlayersInfo(this.oldData.playerInfos.length - this.MIN_PLAYER);
+    if (this.finishGameTime) {
+      this.winnerPlayer = this.oldData.playerInfos.filter(data => data.winner)[0];
+    }
+
   }
 
   initRouteParams() {
@@ -52,9 +70,11 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
       filter(data => data.id),
       switchMap((param) => {
         return this.gameService.getGameById(param.id).then((data: GameModel) => {
-          this.gameForm.setValue(data);
+          this.restoreInformation(data);
+          this.gameForm.patchValue(data);
           this.cdr.detectChanges();
         }).catch(err => {
+          console.log('err ->', err);
           this.gameTime = false;
           this.cdr.detectChanges();
           this.router.navigate(['/game-setting']);
@@ -80,7 +100,11 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
 
   private initGameInfo() {
     this.gameForm.patchValue({createdDate: new Date()});
-    for (let i = 0; i < this.MIN_PLAYER; i++) {
+    this.initPlayersInfo(this.MIN_PLAYER);
+  }
+
+  private initPlayersInfo(countPlayers: number) {
+    for (let i = 0; i < countPlayers; i++) {
       this.playerInfoList.push(this.newPlayerInfo());
     }
   }
@@ -91,16 +115,18 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         colorTrains: ['', Validators.required],
         name: ['', Validators.required]
       }),
-      result: undefined
+      result: undefined,
+      winner: undefined
     });
   }
 
   async submitGameForm() {
     if (this.gameForm.valid) {
       const gameSetting: GameModel = this.gameForm.value;
-      const gameId = await this.gameService.startGame(gameSetting);
-      this.gameForm.patchValue({gameId});
-      await this.router.navigate(['/game-setting', {id: gameId}]);
+      const id = await this.gameService.startGame(gameSetting);
+      this.gameForm.patchValue({id});
+      this.gameForm.patchValue({status: GameStatusEnum.CURRENT.value});
+      await this.router.navigate(['/game-setting', {id: id}]);
     } else {
       this.gameForm.updateValueAndValidity();
       this.gameForm.markAllAsTouched();
@@ -111,13 +137,50 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
   }
 
   finishGame() {
-    if (this.gameForm.valid) {
-
-      this.gameService.updateGameInfoById(this.gameForm.value.gameId, this.gameForm.value);
+    if (this.gameForm.valid && this.finishGameTime) {
+      Object.assign(this.oldData, {status: GameStatusEnum.COMPLETE.value});
+      this.updateGameInfoById();
       this.router.navigateByUrl('/dashboard');
     } else {
       this.message.error('Fill results for players!');
     }
+  }
+
+  private updateGameInfoById() {
+    const req = {...this.oldData, ...this.gameForm.value};
+    this.gameService.updateGameInfoById(this.gameForm.value.id, req);
+
+  }
+
+  private checkAllFillResult(): boolean {
+    const gameModel: GameModel = this.gameForm.value;
+    const filledResultList = gameModel.playerInfos.filter(data => !!data.result?.totalValueRoutes);
+    return gameModel.playerInfos.length === filledResultList.length;
+  }
+
+  private checkResult() {
+    const gameModel: GameModel = this.gameForm.value;
+    this.finishGameTime = this.checkAllFillResult();
+    if (this.finishGameTime) {
+
+      let winnerResult = gameModel?.playerInfos[0]?.result?.totalValue;
+      let winnerControl = this.playerInfoList.controls[0];
+
+      for (const control of this.playerInfoList.controls) {
+        console.log('constrol ->', control.value);
+        // Удалить предыдущего победителя
+        winnerControl.patchValue({winner: false, winnerResult: null});
+        if (control.value?.result?.totalValue > winnerResult) {
+          winnerResult = control.value?.result?.totalValue;
+          winnerControl = control;
+        }
+      }
+
+      winnerControl.patchValue({winner: true});
+      this.gameForm.patchValue({winnerResult});
+      this.winnerPlayer = winnerControl.value;
+    }
+
   }
 
   addPlayerInfo($event: MouseEvent) {
@@ -128,12 +191,19 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
 
   calcResult(control: AbstractControl) {
     // this.router.navigateByUrl('/gameboard');
+    console.log('control.value.result ->', control.value.result);
     this.modalService.create({
       nzTitle: 'Calculate result',
       nzContent: GameboardComponent,
+      nzComponentParams: {
+        currentData: control.value.result
+      },
       nzOnOk: (d) => {
         const result = Object.assign({}, this.gameResultService.currentPlayerResult);
         control.patchValue({result});
+        this.checkResult();
+        this.cdr.detectChanges();
+        this.updateGameInfoById();
       }
     });
   }

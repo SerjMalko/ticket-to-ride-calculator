@@ -60,9 +60,35 @@
   color: #777;
 }
 
-input.ant-input.ng-invalid.ng-touched {
-  border-color: red;
+.train-img {
+  width: $base-indent * 2;
+  height: $base-indent * 2;
+  // convert color svg element https://codepen.io/sosuke/pen/Pjoqqp
+  filter: invert(51%) sepia(77%) saturate(4490%) hue-rotate(166deg) brightness(101%) contrast(101%);
+
+  &__red {
+    filter: invert(14%) sepia(90%) saturate(5610%) hue-rotate(358deg) brightness(109%) contrast(114%);
+  }
+
+  &__blue {
+    filter: invert(9%) sepia(100%) saturate(4994%) hue-rotate(244deg) brightness(108%) contrast(149%);
+  }
+
+  &__black {
+    filter: invert(0%) sepia(95%) saturate(20%) hue-rotate(39deg) brightness(93%) contrast(107%);
+  }
+
+  &__yellow {
+    filter: invert(99%) sepia(61%) saturate(7500%) hue-rotate(358deg) brightness(103%) contrast(101%);
+  }
+
+  &__green {
+    filter: invert(23%) sepia(94%) saturate(4235%) hue-rotate(112deg) brightness(92%) contrast(104%);
+  }
 }
-nz-select.ng-invalid.ng-touched > .ant-select-selection {
-  border-color: red !important;
+
+.game-result-list {
+  margin-bottom: $base-indent * 2;
 }
+
+

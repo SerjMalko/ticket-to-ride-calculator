@@ -1,7 +1,8 @@
 import { TrainResultModel } from 'src/app/models/train-result.model';
 import { TrainRouteModel } from 'src/app/models/train-route.model';
+import { GeneralDataModel } from 'src/app/models/general-data.model';
 
-export class PlayerResultModel {
+export interface PlayerResultModel extends GeneralDataModel {
   trains: Array<TrainResultModel>;
   routes: Array<TrainRouteModel>;
 
