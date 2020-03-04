@@ -56,7 +56,6 @@ export class GameService {
     return this.afs.collection(FirestoreCollectionConst.GAME_RESULTS.name)
       .doc(id).ref.get().then(doc => {
         if (doc.exists) {
-          console.log('Document data:', doc.data());
           return doc.data();
         } else {
           console.log('No such document!');
@@ -67,7 +66,6 @@ export class GameService {
   }
 
   updateGameInfoById(gameId: string, value: GameModel) {
-    console.log('value ->', value);
     return this.afs.collection(FirestoreCollectionConst.GAME_RESULTS.name)
       .doc(gameId)
       .set(JSON.parse(JSON.stringify(value)), { merge: true });

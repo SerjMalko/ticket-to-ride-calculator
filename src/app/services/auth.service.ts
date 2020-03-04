@@ -35,15 +35,11 @@ export class AuthService {
 
     const credential = await this.afAuth.auth.signInWithEmailAndPassword(userData.email, userData.password);
 
-    console.log('result from ->', credential);
 
     // This gives you a Google Access Token. You can use it to access the Google API.
     const token = credential.credential;
     // The signed-in user info.
     const user = credential.user;
-
-    console.log('result ->', token, user);
-
     return this.updateUserData(credential.user);
 
   }
@@ -55,8 +51,6 @@ export class AuthService {
     const token = credential.credential;
     // The signed-in user info.
     const user = credential.user;
-
-    console.log('result ->', token, user);
 
     return this.updateUserData(credential.user);
 

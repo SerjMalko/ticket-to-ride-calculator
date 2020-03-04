@@ -131,7 +131,6 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
       this.gameForm.updateValueAndValidity();
       this.gameForm.markAllAsTouched();
       this.message.error('Fill all required fields');
-      console.log('Invalid form ->', this.gameForm);
     }
 
   }
@@ -167,7 +166,6 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
       let winnerControl = this.playerInfoList.controls[0];
 
       for (const control of this.playerInfoList.controls) {
-        console.log('constrol ->', control.value);
         // Удалить предыдущего победителя
         winnerControl.patchValue({winner: false, winnerResult: null});
         if (control.value?.result?.totalValue > winnerResult) {
@@ -191,7 +189,6 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
 
   calcResult(control: AbstractControl) {
     // this.router.navigateByUrl('/gameboard');
-    console.log('control.value.result ->', control.value.result);
     this.modalService.create({
       nzTitle: 'Calculate result',
       nzContent: GameboardComponent,

@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
         if (!loggedIn) {
           console.log('Access denied');
           this.messageService.warning('Access only login user.');
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/login');
         }
       })
     );

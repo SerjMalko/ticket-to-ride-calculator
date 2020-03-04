@@ -65,7 +65,6 @@ export class GameboardComponent implements OnInit {
       for (let i = 0; i < this.currentData.routes.length - this.MIN_ROUTE_COUNT; i++) {
         this.addTrainRoute();
       }
-      console.log('this.currentData ->', this.currentData);
       this.trainsForm.patchValue(this.currentData);
       this.calculateResultValues(this.currentData);
     }
