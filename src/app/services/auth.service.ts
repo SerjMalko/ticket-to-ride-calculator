@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase';
+import { auth } from 'firebase/app';
 import { User } from 'firebase';
 import { Observable, of } from 'rxjs';
 import { UserModel } from 'src/app/models/user.model';
@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   async loginByFb() {
-    const fbProvider = new firebase.auth.FacebookAuthProvider();
+    const fbProvider = new auth.FacebookAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(fbProvider);
     // This gives you a Google Access Token. You can use it to access the Google API.
     const token = credential.credential;
