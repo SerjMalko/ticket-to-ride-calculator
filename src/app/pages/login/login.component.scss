@@ -7,3 +7,11 @@
 .login-form-button {
   width: 100%;
 }
+
+
+.display-name {
+  &__photo {
+    position: relative;
+    border-radius: 25px;
+  }
+}

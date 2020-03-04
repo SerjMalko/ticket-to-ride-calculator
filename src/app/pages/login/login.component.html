@@ -1,7 +1,7 @@
 <ng-container *ngIf="authService.user$ | async as user; else loginEmail">
-        <span>
+        <span class="display-name">
           {{user.displayName ? user.displayName : user.email}}
-          <img *ngIf="user.photoURL" src="{{user.photoURL}}" alt="photo">
+          <img class="display-name__photo" *ngIf="user.photoURL" src="{{user.photoURL}}" alt="photo">
 
         </span>
 </ng-container>
@@ -35,4 +35,13 @@
       </nz-form-control>
     </nz-form-item>
   </form>
+
+  <div>
+      <span class="header-login" (click)="authService.loginByFb()">
+            <i class="trigger"
+               nz-icon
+               [nzType]="'facebook'"
+            ></i>
+      </span>
+  </div>
 </ng-template>

@@ -52,11 +52,13 @@
 
         <ng-container *ngIf="authService.user$ | async as user; else loginFb">
 
-        <span>
-          {{user.displayName ? user.displayName : user.email}}
-          <img *ngIf="user.photoURL" src="{{user.photoURL}}" alt="photo">
+          <span class="header-login-wrapper">
+          <span class="display-name">
+            {{user.displayName ? user.displayName : user.email}}
 
-        </span>
+            <img class="display-name__photo" *ngIf="user.photoURL" src="{{user.photoURL}}" alt="photo">
+
+          </span>
 
           <span class="header-login" (click)="authService.logout()">
             <i class="trigger"
@@ -64,6 +66,7 @@
                [nzType]="'logout'"
             ></i>
           </span>
+            </span>
         </ng-container>
 
 
